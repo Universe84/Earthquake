@@ -5,6 +5,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Metadata(
     val title: String,
-    val count: Integer,
-    val status: Integer
+    val count: Int,
+    val status: Int
 ) : Parcelable

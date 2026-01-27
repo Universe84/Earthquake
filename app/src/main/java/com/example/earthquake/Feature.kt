@@ -4,5 +4,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Feature(
-    val type:String
+    val properties : Properties,
+    val geometry: Geometry
 ) : Parcelable
