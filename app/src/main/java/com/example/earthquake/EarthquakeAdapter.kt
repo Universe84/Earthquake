@@ -9,13 +9,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 
+
+
 class EarthquakeAdapter(var earthquakeList : List<Feature>) :
     RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>(){
+
+    companion object{
+        val EXTRA_EARTHQUAKE = "earthquake"
+    }
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textViewMagnitude : TextView
-        val textViewLocation : TextView
-        val textViewTime : TextView
+        val textViewMagnitude: TextView
+        val textViewLocation: TextView
+        val textViewTime: TextView
         val layout: ConstraintLayout
+
         init {
             // Define click listener for the ViewHolder's View
             textViewMagnitude = view.findViewById(R.id.textView_itemEarthquake_magnitude)
@@ -33,22 +40,26 @@ class EarthquakeAdapter(var earthquakeList : List<Feature>) :
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: com.example.earthquake.HeroAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
         // Get element from your heroList at this position and replace the
         // contents of the view with that element
-        val hero = heroList[position]
+        val earthquake = earthquakeList[position]
         val context = viewHolder.layout.context
 
-        viewHolder.textViewMagnitude.text = hero.ranking.toString()
-        viewHolder.textViewDesc.text = hero.description
-        viewHolder.textViewName.text = hero.name
+        viewHolder.textViewMagnitude.text = earthquake.properties.mag.toString()
+        viewHolder.textViewTime.text = earthquake.properties.time.toString()
+        viewHolder.textViewLocation.text = earthquake.properties.place
         viewHolder.layout.setOnClickListener {
-            val intent = Intent(context, HeroesDetailActivity::class.java)
-            intent.putExtra(HeroesDetailActivity.EXTRA_HERO, hero)
+            val intent = Intent(context, EarthquakeMapActivity::class.java)
+            intent.putExtra(EarthquakeMapActivity.EXTRA_EARTHQUAKE, earthquake)
             Toast.makeText(context, "${hero.name} clicked!", Toast.LENGTH_SHORT).show()
             context.startActivity(intent)
         }
 
     }
 
+    override fun getItemCount(): Int {
+        TODO("Not yet implemented")
+    }
+}
