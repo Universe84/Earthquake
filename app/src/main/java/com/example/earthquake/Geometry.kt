@@ -4,5 +4,5 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Geometry(
-    val coordinates : List<Int>
+    val coordinates : List<Double>
 ) : Parcelable

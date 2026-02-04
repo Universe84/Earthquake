@@ -20,6 +20,7 @@ class EarthquakeListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEarthquakeListBinding
     companion object{
         val TAG : String = "EarthquakeList"
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,27 +28,26 @@ class EarthquakeListActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityEarthquakeListBinding.inflate(layoutInflater)
 
+
         setContentView(binding.root)
+
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        var gson = Gson()
-        val inputStream = resources.openRawResource(R.raw.earthquake)
-        val jsonString = inputStream.bufferedReader().use {
-            it.readText()
-        }
-        val type = object : TypeToken<List<FeatureCollection>>() { }.type
-        val earthquakes = gson.fromJson<List<FeatureCollection>>(jsonString, type)
-        Log.d(TAG, "onCreate: $heroes")
 
 
 
+// [espresso + milk]r's counterpart
 
 
         val earthquakeService = RetrofitHelper.getInstance().create(EarthquakeService::class.java)
         val earthquakeCall = earthquakeService.getEarthquakeDataPastDay()
+
+
 
         earthquakeCall.enqueue(object: Callback<FeatureCollection> {
             override fun onResponse(
@@ -58,10 +58,15 @@ class EarthquakeListActivity : AppCompatActivity() {
                 Log.d(TAG, "onResponse: ${featureCollection}")
                 if(featureCollection != null){
 
+                    var customAdapter = EarthquakeAdapter(featureCollection.features)
+                    binding.recyclerViewEarthquakeList.layoutManager = LinearLayoutManager(this@EarthquakeListActivity)
+                    binding.recyclerViewEarthquakeList.adapter = customAdapter
+
+                    val recyclerView: RecyclerView = findViewById(R.id.recyclerView_earthquakeList)
+                    recyclerView.layoutManager = LinearLayoutManager(this@EarthquakeListActivity)
+                    recyclerView.adapter = customAdapter
                 }
-                val recyclerView: RecyclerView = findViewById(R.id.recyclerView_earthquakeList)
-                recyclerView.layoutManager = LinearLayoutManager(this)
-                recyclerView.adapter = customAdapter
+
             }
 
             override fun onFailure(

@@ -18,9 +18,15 @@ import java.util.ArrayList
 
 class EarthquakeMapActivity : AppCompatActivity() {
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 1
+    companion object{
+        val EXTRA_EARTHQUAKE = "earthquake"
+    }
     private lateinit var map : MapView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val earthquaked = intent.getParcelableExtra(EXTRA_EARTHQUAKE) ?: Feature(Properties(20.0, "hi","apples",100,"abc.com"), Geometry(listOf(1.0,2.0,3.0)))
 
         //handle permissions first, before map is created. not depicted here
 

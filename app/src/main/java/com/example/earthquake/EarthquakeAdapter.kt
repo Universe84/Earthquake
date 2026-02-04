@@ -14,9 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 class EarthquakeAdapter(var earthquakeList : List<Feature>) :
     RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>(){
 
-    companion object{
-        val EXTRA_EARTHQUAKE = "earthquake"
-    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textViewMagnitude: TextView
         val textViewLocation: TextView
@@ -53,13 +51,13 @@ class EarthquakeAdapter(var earthquakeList : List<Feature>) :
         viewHolder.layout.setOnClickListener {
             val intent = Intent(context, EarthquakeMapActivity::class.java)
             intent.putExtra(EarthquakeMapActivity.EXTRA_EARTHQUAKE, earthquake)
-            Toast.makeText(context, "${hero.name} clicked!", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "${earthquake.name} clicked!", Toast.LENGTH_SHORT).show()
             context.startActivity(intent)
         }
 
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return earthquakeList.size
     }
 }
