@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_listOptions_sortByMagnitude"
+        android:title="Sort By Magnitude" />
+
+    <item
+        android:id="@+id/item_listOptions_sortByRecency"
+        android:title="Sort By Recency" />
+    <item
+        android:id="@+id/item_listOptions_help"
+        android:title="Legend"
+        android:icon="@drawable/question_mark"
+        app:showAsAction="ifRoom"/>
+</menu>

@@ -43,10 +43,30 @@ class EarthquakeAdapter(var earthquakeList : List<Feature>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val decimalFormat = DecimalFormat("#.#")
+        val decimalFormat = DecimalFormat("#.0")
 
         val earthquake = earthquakeList[position]
         val context = viewHolder.layout.context
+
+        when(earthquake.properties.mag){
+            in 1.0..2.5 -> {
+                viewHolder.textViewMagnitude.setTextColor(context.resources.getColor(R.color.blue, context.theme))
+                viewHolder.textViewMagnitude.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0 ,0 ,0)
+            }
+            in 2.5..4.5 -> {
+                viewHolder.textViewMagnitude.setTextColor(context.resources.getColor(R.color.orange, context.theme))
+                viewHolder.textViewMagnitude.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0 ,0 ,0)
+            }
+            in 4.6..6.5 -> {
+                viewHolder.textViewMagnitude.setTextColor(context.resources.getColor(R.color.red, context.theme))
+                viewHolder.textViewMagnitude.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.close, 0 ,0 ,0)
+            }
+            in 6.6..10.0 -> {
+                viewHolder.textViewMagnitude.setTextColor(context.resources.getColor(R.color.purple, context.theme))
+                viewHolder.textViewMagnitude.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.warning, 0 ,0 ,0)
+            }
+
+        }
 
         viewHolder.textViewMagnitude.text = decimalFormat.format(earthquake.properties.mag)
 

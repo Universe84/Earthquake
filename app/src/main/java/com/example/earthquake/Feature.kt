@@ -7,3 +7,4 @@ data class Feature(
     val properties : Properties,
     val geometry: Geometry
 ) : Parcelable
+

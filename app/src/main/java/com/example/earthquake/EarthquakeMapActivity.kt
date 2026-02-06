@@ -71,6 +71,9 @@ class EarthquakeMapActivity : AppCompatActivity() {
         mapController.setCenter(geoPoint);
         firstMarker.position = geoPoint
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar()?.hide();
+        }
         firstMarker.setAnchor(Marker.ANCHOR_BOTTOM, Marker.ANCHOR_CENTER)
         firstMarker.icon = ContextCompat.getDrawable(this, R.drawable.marker_icon)
 
