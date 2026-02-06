@@ -1,9 +1,11 @@
 package com.example.earthquake
+import java.text.SimpleDateFormat
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.widget.TextView
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -12,9 +14,13 @@ import androidx.core.content.ContextCompat
 
 import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 
 import java.util.ArrayList
+import java.util.Date
+import java.util.Locale
 
 class EarthquakeMapActivity : AppCompatActivity() {
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 1
@@ -22,6 +28,13 @@ class EarthquakeMapActivity : AppCompatActivity() {
         val EXTRA_EARTHQUAKE = "earthquake"
     }
     private lateinit var map : MapView
+    private lateinit var firstMarker : Marker
+    private lateinit var geoPoint : GeoPoint
+
+    private lateinit var textViewTitle: TextView
+    private lateinit var textViewUrl: TextView
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,9 +55,40 @@ class EarthquakeMapActivity : AppCompatActivity() {
 
         //inflate and create the map
         setContentView(R.layout.activity_earthquake_map)
-
+        wireWidgets()
         map = findViewById<MapView>(R.id.map)
+
         map.setTileSource(TileSourceFactory.MAPNIK)
+
+        textViewTitle.text = "${earthquaked.properties.place}"
+        textViewUrl.text = "${earthquaked.properties.url}"
+
+
+        geoPoint = GeoPoint(earthquaked.geometry.coordinates[1], earthquaked.geometry.coordinates[0])
+        firstMarker = Marker(map)
+        val mapController = map.controller
+        mapController.setZoom(9.5)
+        mapController.setCenter(geoPoint);
+        firstMarker.position = geoPoint
+
+        firstMarker.setAnchor(Marker.ANCHOR_BOTTOM, Marker.ANCHOR_CENTER)
+        firstMarker.icon = ContextCompat.getDrawable(this, R.drawable.marker_icon)
+
+        firstMarker.title = "Magnitude: ${earthquaked.properties.mag} Location: ${earthquaked.properties.place} Time:${convertTimestamp(earthquaked.properties.time)}"
+        map.overlays.add(firstMarker)
+        map.invalidate()
+    }
+
+    fun convertTimestamp(timestamp: Long): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val date = Date(timestamp)
+        return sdf.format(date)
+    }
+
+    private fun wireWidgets(){
+        textViewUrl = findViewById(R.id.textView_earthquakeMap_url)
+        textViewTitle = findViewById(R.id.textView_earthquakeMap_title)
+
     }
 
     override fun onResume() {

@@ -57,14 +57,15 @@ class EarthquakeListActivity : AppCompatActivity() {
                 val featureCollection = response.body()
                 Log.d(TAG, "onResponse: ${featureCollection}")
                 if(featureCollection != null){
+                    val filteredFeatures = featureCollection.features.filter { feature ->
+                        feature.properties.mag >= 1
+                    }
 
-                    var customAdapter = EarthquakeAdapter(featureCollection.features)
+                    var customAdapter = EarthquakeAdapter(filteredFeatures)
                     binding.recyclerViewEarthquakeList.layoutManager = LinearLayoutManager(this@EarthquakeListActivity)
                     binding.recyclerViewEarthquakeList.adapter = customAdapter
 
-                    val recyclerView: RecyclerView = findViewById(R.id.recyclerView_earthquakeList)
-                    recyclerView.layoutManager = LinearLayoutManager(this@EarthquakeListActivity)
-                    recyclerView.adapter = customAdapter
+
                 }
 
             }

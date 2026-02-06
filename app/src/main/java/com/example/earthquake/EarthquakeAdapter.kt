@@ -8,7 +8,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-
+import androidx.media3.common.Format
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class EarthquakeAdapter(var earthquakeList : List<Feature>) :
@@ -39,14 +43,14 @@ class EarthquakeAdapter(var earthquakeList : List<Feature>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val decimalFormat = DecimalFormat("#.#")
 
-        // Get element from your heroList at this position and replace the
-        // contents of the view with that element
         val earthquake = earthquakeList[position]
         val context = viewHolder.layout.context
 
-        viewHolder.textViewMagnitude.text = earthquake.properties.mag.toString()
-        viewHolder.textViewTime.text = earthquake.properties.time.toString()
+        viewHolder.textViewMagnitude.text = decimalFormat.format(earthquake.properties.mag)
+
+        viewHolder.textViewTime.text = convertTimestamp(earthquake.properties.time)
         viewHolder.textViewLocation.text = earthquake.properties.place
         viewHolder.layout.setOnClickListener {
             val intent = Intent(context, EarthquakeMapActivity::class.java)
@@ -55,6 +59,12 @@ class EarthquakeAdapter(var earthquakeList : List<Feature>) :
             context.startActivity(intent)
         }
 
+    }
+
+    fun convertTimestamp(timestamp: Long): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val date = Date(timestamp)
+        return sdf.format(date)
     }
 
     override fun getItemCount(): Int {
